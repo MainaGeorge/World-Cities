@@ -4,6 +4,7 @@ import {City} from './city';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import {Country} from '../countries/country';
 
 @Component({
   selector: 'app-cities',

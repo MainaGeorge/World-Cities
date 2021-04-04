@@ -10,6 +10,8 @@ import { CitiesComponent } from './cities/cities.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MaterialModule} from './material/material.module';
 import { CountriesComponent } from './countries/countries.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import { CityEditComponent } from './cities/city-edit/city-edit.component';
 
 // noinspection AngularInvalidImportedOrDeclaredSymbol
 @NgModule({
@@ -18,14 +20,16 @@ import { CountriesComponent } from './countries/countries.component';
     HomeComponent,
     NavigationComponent,
     CitiesComponent,
-    CountriesComponent
+    CountriesComponent,
+    CityEditComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -38,9 +38,14 @@ namespace WorldCities
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WorldCities", Version = "v1" });
             });
+            services.AddCors(opt => opt.AddPolicy("default", builder =>
+            {
+                builder.WithOrigins("http://localhost:4200").AllowAnyHeader();
+            }));
             services.AddCors(opt => opt.AddDefaultPolicy(option =>
             {
-                option.AllowAnyOrigin();
+
+                option.WithOrigins("http://localhost:4200").WithHeaders("GET", "POST", "PUT", "DELETE");
             }));
         }
 
@@ -58,7 +63,7 @@ namespace WorldCities
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors("default");
 
             app.UseAuthorization();
 

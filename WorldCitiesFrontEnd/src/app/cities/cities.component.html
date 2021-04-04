@@ -2,6 +2,12 @@
 
 <p *ngIf="!cities"><em>Loading cities....</em></p>
 
+<div class="commands text-right" *ngIf="cities">
+  <a class="btn btn-primary" [routerLink]="['/city']">
+    Add a new city
+  </a>
+</div>
+
 <mat-form-field [hidden]="!cities">
   <label>
     <input matInput (keyup)="loadData($event.target.value)" placeholder="Filter by name or part of it ...">
@@ -21,7 +27,7 @@
 
 <ng-container matColumnDef="name">
   <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-  <th *matCellDef="let city">{{ city.name}}</th>
+  <th *matCellDef="let city"><a [routerLink]="['/city', city.id]"> {{ city.name }}</a></th>
 </ng-container>
 
 <ng-container matColumnDef="latitude">

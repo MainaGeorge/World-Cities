@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace WorldCities.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("default")]
     public class CitiesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -74,9 +76,10 @@ namespace WorldCities.Controllers
         // POST: api/Cities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [EnableCors("default")]
         public async Task<ActionResult<City>> PostCity(City city)
         {
-            _context.Cities.Add(city);
+            await _context.Cities.AddAsync(city);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCity", new { id = city.Id }, city);
@@ -96,6 +99,20 @@ namespace WorldCities.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPost]
+        [Route("IsDuplicateCity")]
+        public async Task<bool> IsDuplicateCity(City city)
+        {
+            return await _context.Cities.AnyAsync(c =>
+
+                c.CountryId == city.CountryId &&
+                c.Name == city.Name &&
+                c.Latitude == city.Latitude &&
+                c.Longitude == city.Longitude &&
+                c.Id != city.Id
+            );
         }
 
         private bool CityExists(int id)
