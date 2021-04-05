@@ -12,6 +12,7 @@ import {MaterialModule} from './material/material.module';
 import { CountriesComponent } from './countries/countries.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { CityEditComponent } from './cities/city-edit/city-edit.component';
+import { CountryEditComponent } from './countries/country-edit/country-edit.component';
 
 // noinspection AngularInvalidImportedOrDeclaredSymbol
 @NgModule({
@@ -21,7 +22,8 @@ import { CityEditComponent } from './cities/city-edit/city-edit.component';
     NavigationComponent,
     CitiesComponent,
     CountriesComponent,
-    CityEditComponent
+    CityEditComponent,
+    CountryEditComponent,
   ],
   imports: [
     BrowserModule,

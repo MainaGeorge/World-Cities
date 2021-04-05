@@ -5,6 +5,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {Country} from '../countries/country';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-cities',
@@ -14,7 +16,7 @@ import {Country} from '../countries/country';
 export class CitiesComponent implements OnInit {
   baseUrl = 'https://localhost:44348/api/';
   public cities: MatTableDataSource<City>;
-  public displayedColumns: string[] = ['id', 'name', 'latitude', 'longitude'];
+  public displayedColumns: string[] = ['id', 'name', 'latitude', 'longitude', 'countryName'];
   defaultPageIndex = 0;
   defaultPageSize = 10;
   public defaultSortColumn = 'name';
@@ -22,7 +24,7 @@ export class CitiesComponent implements OnInit {
 
   defaultFilterColumn = 'name';
   filterQuery: string = null;
-
+  filterTextChanged: Subject<string> = new Subject<string>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(private http: HttpClient) { }
@@ -59,5 +61,13 @@ export class CitiesComponent implements OnInit {
 
     if(query) this.filterQuery = query;
     this.getData(pageEvent);
+  }
+
+  onFilterTextChanged(filterText: string){
+    if(this.filterTextChanged.observers.length === 0){
+      this.filterTextChanged.pipe(debounceTime(1000), distinctUntilChanged())
+        .subscribe(query => this.loadData(query));
+    }
+    this.filterTextChanged.next(filterText);
   }
 }

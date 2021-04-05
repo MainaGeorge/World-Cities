@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WorldCities.Data;
 using WorldCities.Data.Entity_Models;
+using WorldCities.DTOs;
 
 namespace WorldCities.Controllers
 {
@@ -22,10 +23,19 @@ namespace WorldCities.Controllers
 
         // GET: api/Cities
         [HttpGet]
-        public async Task<ActionResult<ApiResult<City>>> GetCities(int pageIndex = 0, int pageSize = 10,
+        public async Task<ActionResult<ApiResult<CityDto>>> GetCities(int pageIndex = 0, int pageSize = 10,
             string sortColumn = null, string sortOrder = null, string filterColumn = null, string filterQuery = null)
         {
-            return await ApiResult<City>.CreateAsync(_context.Cities, pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
+            return await ApiResult<CityDto>.CreateAsync(_context.Cities.Select(c => new CityDto
+            {
+                Name = c.Name,
+                Id = c.Id,
+                CountryId = c.Country.Id,
+                CountryName = c.Country.Name,
+                Latitude = c.Latitude,
+                Longitude = c.Longitude
+            }),
+                pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
         }
 
         // GET: api/Cities/5
@@ -45,6 +55,7 @@ namespace WorldCities.Controllers
         // PUT: api/Cities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [EnableCors("default")]
         public async Task<IActionResult> PutCity(int id, City city)
         {
             if (id != city.Id)

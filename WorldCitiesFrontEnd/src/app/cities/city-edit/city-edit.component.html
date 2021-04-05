@@ -12,7 +12,7 @@
       <label for="name">City name:</label>
       <br />
       <input type="text" id="name"  formControlName="name"  required placeholder="City name..." class="form-control">
-      <div class="invalid-feedback" *ngIf="form.get('name').invalid && (form.get('name').dirty || form.get('name').touched)">
+      <div class="invalid-feedback" *ngIf="doesControlHaveErrors('name')">
         <div *ngIf="form.get('name').errors?.required">
           Name is Required.
         </div>
@@ -22,9 +22,12 @@
       <label for="latitude">City latitude:</label>
       <br />
       <input type="text" id="latitude"  formControlName="latitude"  required placeholder="Latitude..." class="form-control">
-      <div class="invalid-feedback" *ngIf="form.get('latitude').invalid && (form.get('latitude').touched || form.get('latitude').dirty)">
-        <div *ngIf="form.get('latitude').errors?.required">
+      <div class="invalid-feedback" *ngIf="doesControlHaveErrors('latitude')">
+        <div *ngIf="getControl('latitude').errors?.required">
           Latitude is Required
+        </div>
+        <div *ngIf="getControl('latitude').errors?.pattern">
+          Latitude requires a positive or negative number with 0-4 decimal places.
         </div>
       </div>
     </div>
@@ -32,9 +35,12 @@
       <label for="longitude">City longitude:</label>
       <br />
       <input type="text" id="longitude"  formControlName="longitude"  required placeholder="Longitude..." class="form-control">
-      <div class="invalid-feedback" *ngIf="form.get('longitude').invalid && (form.get('longitude').touched || form.get('longitude').dirty)">
-        <div *ngIf="form.get('longitude').errors?.required">
+      <div class="invalid-feedback" *ngIf="doesControlHaveErrors('longitude')">
+        <div *ngIf="getControl('longitude').errors?.required">
           Longitude is required
+        </div>
+        <div *ngIf="getControl('longitude').errors?.pattern">
+          Longitude requires a positive or negative number with 0-4 decimal places.
         </div>
       </div>
     </div>
@@ -47,7 +53,7 @@
           <mat-option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="invalid-feedback" *ngIf="form.get('countryId').invalid && (form.get('countryId').touched || form.get('countryId').dirty)">
+      <div class="invalid-feedback" *ngIf="doesControlHaveErrors('countryId')">
         <div *ngIf="form.get('countryId').errors?.required">
           Please select a country
         </div>

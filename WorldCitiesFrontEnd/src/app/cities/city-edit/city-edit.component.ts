@@ -6,13 +6,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Country} from '../../countries/country';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {FormBaseComponent} from '../../shared/form-base/form-base.component';
 
 @Component({
   selector: 'app-city-edit',
   templateUrl: './city-edit.component.html',
   styleUrls: ['./city-edit.component.css']
 })
-export class CityEditComponent implements OnInit {
+export class CityEditComponent extends FormBaseComponent implements OnInit {
   baseUrl = 'https://localhost:44348/api/';
   title: string;
   countries: Country[];
@@ -20,13 +21,15 @@ export class CityEditComponent implements OnInit {
   city: City;
   id? : number;
 
-  constructor(private http: HttpClient, private activateRoute: ActivatedRoute, private router: Router) { }
+  constructor(private http: HttpClient, private activateRoute: ActivatedRoute, private router: Router) {
+    super();
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      latitude: new FormControl('', Validators.required),
-      longitude: new FormControl('', Validators.required),
+      latitude: new FormControl('', [Validators.required,  Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,4})?$/)]),
+      longitude: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,4})?$/)]),
       countryId: new FormControl('', Validators.required)
     }, null, this.isDuplicateCity())
 
@@ -98,5 +101,6 @@ export class CityEditComponent implements OnInit {
         return (result  ? { isDuplicateCity : true} : null);
       }));
     }
+
   }
 }

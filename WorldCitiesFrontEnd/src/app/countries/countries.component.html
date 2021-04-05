@@ -2,9 +2,14 @@
 
 <p *ngIf="!countries"><em>Loading countries....</em></p>
 
+<div class="command text-right" *ngIf="countries">
+  <button type="submit" class="btn btn-success" [routerLink]="['/country']">
+    Add a new Country
+  </button>
+</div>
 <mat-form-field [hidden]="!countries">
   <label>
-    <input matInput (keyup)="loadData($event.target.value)" placeholder="Filter by name or part of it ...">
+    <input matInput (keyup)="onFilterTextChanged($event.target.value)" placeholder="Filter by name or part of it ...">
   </label>
 </mat-form-field>
 <table mat-table [dataSource]="countries"
@@ -21,7 +26,7 @@
 
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-    <th *matCellDef="let country">{{ country.name}}</th>
+    <th *matCellDef="let country"><a [routerLink]="['/country', country.id]">{{ country.name}}</a></th>
   </ng-container>
 
   <ng-container matColumnDef="iso2">
@@ -32,6 +37,11 @@
   <ng-container matColumnDef="iso3">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>ISO3</th>
     <th *matCellDef="let country">{{ country.iso3}}</th>
+  </ng-container>
+
+  <ng-container matColumnDef="totCities">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>totCities</th>
+    <th mat-cell *matCellDef="let country">{{ country.totCities}}</th>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

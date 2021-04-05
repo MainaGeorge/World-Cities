@@ -45,7 +45,7 @@ namespace WorldCities
             services.AddCors(opt => opt.AddDefaultPolicy(option =>
             {
 
-                option.WithOrigins("http://localhost:4200").WithHeaders("GET", "POST", "PUT", "DELETE");
+                option.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
             }));
         }
 
